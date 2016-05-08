@@ -249,10 +249,14 @@ abstract class AbstractWriter implements WriterInterface
      */
     public function write(array $event)
     {
+        $filterIsValid = false;
         foreach ($this->filters as $filter) {
-            if (!$filter->filter($event)) {
-                return;
+            if ($filter->filter($event)) {
+                $filterIsValid = true;
             }
+        }
+        if (!$filterIsValid) {
+            return;
         }
 
         $errorHandlerStarted = false;
